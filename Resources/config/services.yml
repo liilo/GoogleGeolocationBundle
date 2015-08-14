@@ -4,6 +4,10 @@ parameters:
     google_geolocation.geolocation_api.daily_limit: 2500
     # Max lifetime of geocoding result (hours). Set to 0 to disable caching
     google_geolocation.geolocation_api.cache_lifetime: 24
+    # Google Maps Geocoding API Key - https://developers.google.com/maps/documentation/geocoding/intro#api_key
+    #google_geolocation.geolocation_api.key: xxxxxxxxxxxx
+    # Use SSL for requests
+    google_geolocation.geolocation_api.use_ssl: true
     
 services:
     google_geolocation.geolocation_api:
@@ -12,3 +16,5 @@ services:
         #    - [ setEntityManager, [ @doctrine.orm.entity_manager ] ]
         #    - [ setDailyLimit, [ %google_geolocation.geolocation_api.daily_limit% ] ]
         #    - [ setCacheLifetime, [ %google_geolocation.geolocation_api.cache_lifetime% ] ]
+        #    - [ setApiKey, [ %google_geolocation.geolocation_api.key% ] ]
+        #    - [ setUseSsl, [ %google_geolocation.geolocation_api.use_ssl% ] ]
