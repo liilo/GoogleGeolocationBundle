@@ -57,6 +57,21 @@ class GeolocationApi
      * @var int
      */
     protected $cacheLifetime;
+    
+    /**
+     * Google Maps Geocoding API key
+     * https://developers.google.com/maps/documentation/geocoding/intro#api_key
+     * 
+     * @var string
+     */
+    protected $apiKey;
+    
+    /**
+     * Use SSL during requests
+     *
+     * @var boolean
+     */
+    protected $useSsl;
 
     public function __construct(Browser $browser = null)
     {
@@ -67,6 +82,8 @@ class GeolocationApi
         $this->cacheLifetime    = 0;
 
         $this->cacheAvailable = false;
+        $this->apiKey = null;
+        $this->useSsl = true;
     }
 
     /**
@@ -133,6 +150,26 @@ class GeolocationApi
     public function setCacheDisabled()
     {
         $this->cacheAvailable = false;
+    }
+    
+    /**
+     * Set the API key to use in all requests
+     * 
+     * @param string $apiKey API key
+     */
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
+    }
+    
+    /**
+     * Set whether if we must use SSL for requests
+     * 
+     * @param boolean $useSsl API key
+     */
+    public function setUseSsl($useSsl)
+    {
+        $this->useSsl = $useSsl;
     }
     
     public function locateAddress($search)
@@ -249,9 +286,13 @@ class GeolocationApi
      */
     protected function request($search)
     {
-        return $this->browser->get('http://maps.googleapis.com/maps/api/geocode/json?' .
+        $params = array();
+        if (null !== $this->apiKey)
+            $params['key'] = $this->apiKey;
+        
+        return $this->browser->get('http'.($this->useSsl ? 's' : '').'://maps.googleapis.com/maps/api/geocode/json?' .
             http_build_query(
-                array('address' => $search, 'sensor' => 'false')
+                array_merge($params, array('address' => $search, 'sensor' => 'false'))
             )
         );
     }
